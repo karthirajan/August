@@ -6,6 +6,7 @@ import java.util.Map;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import cucumber.api.java.en.Given;
@@ -30,7 +31,9 @@ public class AddCustomerSteps {
 	public void user_click_on_add_customer_button() throws InterruptedException {
 		handleFrame();
 	    
-		driver.findElement(By.xpath("(//a[text()='Add Customer'])[1]")).click();
+		WebElement ele = driver.findElement(By.xpath("(//a[text()='Add Customer'])[1]"));
+		ele.click();
+		
 		
 	}
 
@@ -79,7 +82,53 @@ public class AddCustomerSteps {
 		driver.findElement(By.id("telephoneno")).sendKeys(cusDatas.get("phno"));
 	   
 	}
+	
+	@When("User filling up all the details with two dim list")
+	public void user_filling_up_all_the_details_with_two_dim_list(DataTable datas) throws InterruptedException {
+		
+		List<List<String>> cusDatas = datas.asLists();
+		
+          handleFrame();
+		
+		driver.findElement(By.xpath("(//label[@for='done'])[1]")).click();
+		driver.findElement(By.id("fname")).sendKeys(cusDatas.get(1).get(0));
+		driver.findElement(By.id("lname")).sendKeys(cusDatas.get(3).get(1));
+		driver.findElement(By.id("email")).sendKeys(cusDatas.get(2).get(2));
+		driver.findElement(By.name("addr")).sendKeys(cusDatas.get(2).get(3));
+		driver.findElement(By.id("telephoneno")).sendKeys(cusDatas.get(2).get(4));
+	   
+	}
+	
+	@When("User filling up all the details with two dim map")
+	public void user_filling_up_all_the_details_with_two_dim_map(DataTable datas) throws InterruptedException {
+		
+		List<Map<String, String>> cusDatas = datas.asMaps(String.class, String.class);
+		
+          handleFrame();
+		
+		driver.findElement(By.xpath("(//label[@for='done'])[1]")).click();
+		driver.findElement(By.id("fname")).sendKeys(cusDatas.get(1).get("FirstN"));
+		driver.findElement(By.id("lname")).sendKeys(cusDatas.get(3).get("LastN"));
+		driver.findElement(By.id("email")).sendKeys(cusDatas.get(2).get("Mail"));
+		driver.findElement(By.name("addr")).sendKeys(cusDatas.get(2).get("Addr"));
+		driver.findElement(By.id("telephoneno")).sendKeys(cusDatas.get(2).get("Phno"));
+	   
+	}
 
+	
+	@When("User filling up all the details {string},{string},{string},{string},{string}")
+	public void user_filling_up_all_the_details(String fna, String lna, String mail, String add, String ph) throws InterruptedException {
+	    
+                        handleFrame();
+		
+		driver.findElement(By.xpath("(//label[@for='done'])[1]")).click();
+		driver.findElement(By.id("fname")).sendKeys(fna);
+		driver.findElement(By.id("lname")).sendKeys(lna);
+		driver.findElement(By.id("email")).sendKeys(mail);
+		driver.findElement(By.name("addr")).sendKeys(add);
+		driver.findElement(By.id("telephoneno")).sendKeys(ph);
+		
+	}
 
 
 	@When("User click on submit button")
@@ -103,11 +152,14 @@ public class AddCustomerSteps {
 	
 	public void handleFrame() throws InterruptedException {
 		
+		try{
 			 Thread.sleep(5000);
 			    driver.switchTo().frame("flow_close_btn_iframe");
 			    driver.findElement(By.xpath("//div[@id='closeBtn']")).click();
 			    driver.switchTo().defaultContent();
-
+		}catch (Exception e) {
+			// TODO: handle exception
+		}
 		}
 
 
