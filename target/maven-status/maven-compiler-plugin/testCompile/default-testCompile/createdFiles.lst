@@ -1,0 +1,4 @@
+com\telecom\stepdefinition\TariffPlanSteps.class
+com\telecom\stepdefinition\TestRunner.class
+com\telecom\stepdefinition\AddCustomerSteps.class
+com\telecom\stepdefinition\Hook.class
